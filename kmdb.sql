@@ -66,15 +66,81 @@
 .mode column
 .headers off
 
--- Drop existing tables, so you'll start fresh each time this script is run.
--- TODO!
+DROP TABLE IF EXISTS movies;
+DROP TABLE IF EXISTS actors;
+DROP TABLE IF EXISTS top_cast_members;
 
 -- Create new tables, according to your domain model
 -- TODO!
 
+CREATE TABLE movies (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  title TEXT,
+  year_released TEXT,
+  rating TEXT,
+  director TEXT
+);
+
+CREATE TABLE actors (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  actor_name TEXT,
+  character TEXT
+);
+
+CREATE TABLE top_cast_members (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  actor_id TEXT,
+  movie_id INTEGER
+);
+
 -- Insert data into your database that reflects the sample data shown above
 -- Use hard-coded foreign key IDs when necessary
 -- TODO!
+
+INSERT INTO movies (title,year_released,rating,director)
+
+VALUES
+("Batman Begins", "2005", "PG-13", "Christopher Nolan"),
+("The Dark Knight","2008","PG-13","Christopher Nolan"),
+("The Dark Knight Rises","2012","PG-13","Christopher Nolan")
+;
+
+INSERT INTO actors (actor_name, character)
+
+VALUES
+("Christian Bale" , "Bruce Wayne"),
+("Michael Caine" , "Alfred"),
+("Liam Neeson" , "Ra's Al Ghul"),
+("Katie Holmes" , "Rachel Dawes"),
+("Gary Oldman" , "Commissioner Gordon"),
+("Heath Ledger" , "Joker"),
+("Aaron Eckhart" , "Harvey Dent"),
+("Maggie Gyllenhaal" , "Rachel Dawes"),
+("Tom Hardy" , "Bane"),
+("Joseph Grodon-Levitt" , "John Blake"),
+("Anne Hathaway" , "Selina Kyle")
+;
+
+INSERT INTO top_cast_members (actor_id, movie_id)
+
+VALUES
+(1,1),
+(2,1),
+(3,1),
+(4,1),
+(5,1),
+(1,2),
+(6,2),
+(7,2),
+(2,2),
+(8,2),
+(1,3),
+(5,3),
+(9,3),
+(10,3),
+(11,3)
+;
+
 
 -- Prints a header for the movies output
 .print "Movies"
@@ -84,12 +150,19 @@
 -- The SQL statement for the movies output
 -- TODO!
 
+SELECT title, year_released, rating, director FROM movies;
+
 -- Prints a header for the cast output
 .print ""
 .print "Top Cast"
 .print "========"
 .print ""
 
-
 -- The SQL statement for the cast output
 -- TODO!
+
+SELECT movies.title, actors.actor_name, actors.character
+FROM movies
+INNER JOIN actors ON top_cast_members.movie_id = movies.id
+INNER JOIN top_cast_members ON top_cast_members.actor_id = actors.id
+ORDER BY movie_id;
